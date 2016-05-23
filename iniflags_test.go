@@ -43,6 +43,14 @@ func TestUnquoteValue(t *testing.T) {
 	}
 }
 
+func TestUnquoteValueUnclosedError(t *testing.T) {
+	val := "\"val"
+	fixedVal, ok := unquoteValue(val, 0, "")
+	if ok || fixedVal != "" {
+		t.Fatalf("ok should be false and Value should be empty, got %t and '%s'", ok, fixedVal)
+	}
+}
+
 func TestGetFlags(t *testing.T) {
 	parsed = false
 	Parse()

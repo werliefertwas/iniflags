@@ -383,8 +383,8 @@ func unquoteValue(v string, lineNum int, configPath string) (string, bool) {
 	if v[0] != '"' {
 		return removeTrailingComments(v), true
 	}
-	n := strings.LastIndex(v, "\"")
-	if n == -1 {
+	n := strings.LastIndex(v, quote)
+	if n == 0 {
 		log.Printf("iniflags: unclosed string found [%s] at line %d in config file [%s]\n", v, lineNum, configPath)
 		return "", false
 	}
