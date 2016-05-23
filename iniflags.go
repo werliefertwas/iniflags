@@ -380,7 +380,9 @@ func unquoteValue(v string, lineNum int, configPath string) (string, bool) {
 	if len(v) == 0 {
 		return "", true
 	}
-	if v[0] != '"' {
+	var quote string
+	quote = v[0:1]
+	if quote != "\"" && quote != "'" {
 		return removeTrailingComments(v), true
 	}
 	n := strings.LastIndex(v, quote)
@@ -389,7 +391,11 @@ func unquoteValue(v string, lineNum int, configPath string) (string, bool) {
 		return "", false
 	}
 	v = v[1:n]
-	v = strings.Replace(v, "\\\"", "\"", -1)
+	escapedQuote := "\\\""
+	if quote == "'" {
+		escapedQuote = "\\'"
+	}
+	v = strings.Replace(v, escapedQuote, quote, -1)
 	v = strings.Replace(v, "\\n", "\n", -1)
 	return strings.Replace(v, "\\\\", "\\", -1), true
 }

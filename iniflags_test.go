@@ -35,11 +35,19 @@ func TestBOM(t *testing.T) {
 	}
 }
 
-func TestUnquoteValue(t *testing.T) {
+func TestUnquoteValueWithDoubleQuotes(t *testing.T) {
 	val := "\"val#;\\\"\\n\"    # test\n"
 	fixedVal, ok := unquoteValue(val, 0, "")
 	if !ok || fixedVal != "val#;\"\n" {
 		t.Fatalf("Value should be unquoted and stripped, got '%s'", fixedVal)
+	}
+}
+
+func TestUnquoteValueWithSingleQuotes(t *testing.T) {
+	val := "'\"val\"\\'' # test\n"
+	fixedVal, ok := unquoteValue(val, 0, "")
+	if !ok || fixedVal != "\"val\"'" {
+		t.Fatalf("Value should be unquoted and stripped, got \"%s\"", fixedVal)
 	}
 }
 
